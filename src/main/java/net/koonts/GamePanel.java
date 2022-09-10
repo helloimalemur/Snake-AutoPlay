@@ -41,7 +41,10 @@ public class GamePanel extends JPanel implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if(running) {
-            move();
+            randomDirection();
+            System.out.println("Heading: " + direction);
+            if (!checkStep()) {move();}
+            //move();
             checkApple();
             checkCollision();
         } else {
@@ -54,7 +57,7 @@ public class GamePanel extends JPanel implements ActionListener {
 
     public void startGame() {
         applesEaten = 0;
-        bodyParts = 1;
+        bodyParts = 6;
         newApple();
         direction = 'R';
         running = true;
@@ -121,44 +124,116 @@ public class GamePanel extends JPanel implements ActionListener {
         for (int i = bodyParts; i > 0; i--) {
             if ((x[0] == x[i]) && (y[0] == y[i])) {
                 running = false;
+                System.out.println("!!!hit body part");
 
             }
         }
         //check if head touches left border
         if (x[0] < 0) {
             running = false;
+            System.out.println("!!! left border");
         }
         //check if head touches right border
         if (x[0] > SCREEN_WIDTH) {
             running = false;
+            System.out.println("!!! right border");
         }
         //check if head touches top border
         if (y[0] < 0) {
             running = false;
+            System.out.println("!!! top border");
         }
         //check if head touches bottom border
         if (y[0] > SCREEN_HEIGHT) {
             running = false;
+            System.out.println("!!! bottom border");
         }
     }
 
-    public void checkStep() {
+    public void randomDirection() {
+        int ran = random.nextInt(100);
+        if (ran%3==0) {
+            char td = directions.get(random.nextInt(directions.size()));
+            if (!(td == direction)) {
+
+                    if (!(direction == 'U' && td == 'D')) {if (!checkStep()) {direction = td;}}
+                    if (!(direction == 'L' && td == 'R')) {if (!checkStep()) {direction = td;}}
+                    if (!(direction == 'R' && td == 'L')) {if (!checkStep()) {direction = td;}}
+                    if (!(direction == 'D' && td == 'U')) {if (!checkStep()) {direction = td;}}
+
+            }
+        }
+    }
+
+    public boolean checkStep() {
+        //touches body
+
+            if ((direction=='L')) {
+                for (int i = bodyParts; i > 0; i--) {
+                    if ((x[0]-1 == x[i]) && (y[0] == y[i])) {
+                        return true;
+                    }
+                }
+
+            }
+            if ((direction=='R')) {
+                for (int i = bodyParts; i > 0; i--) {
+                    if ((x[0]+1 == x[i]) && (y[0] == y[i])) {
+                        return true;
+                    }
+                }
+
+            }
+            if ((direction=='U')) {
+                for (int i = bodyParts; i > 0; i--) {
+                    if ((x[0] == x[i]) && (y[0]-1 == y[i])) {
+                        return true;
+                    }
+                }
+
+            }
+            if ((direction=='D')) {
+                for (int i = bodyParts; i > 0; i--) {
+                    if ((x[0] == x[i]) && (y[0]+1 == y[i])) {
+                        return true;
+                    }
+                }
+
+            }
+
+            //if ((x[0] == x[i]) && (y[0] == y[i])) {
+            //    return true;
+            //}
+
         //check if head touches left border
         if (x[0] < (UNIT_SIZE)) {
-            if ((direction=='L')) {direction = 'U';}
+            if ((direction=='L')) {
+                direction = 'U';
+                return true;
+            }
         }
         //check if head touches right border
         if ((x[0] > SCREEN_WIDTH-(UNIT_SIZE*2))) { //working
-            if ((direction=='R')) {direction = 'D';}
+            if ((direction=='R')) {
+                direction = 'D';
+                return true;
+            }
         }
         //check if head touches top border
         if (y[0] < (UNIT_SIZE)) {
-            if ((direction=='U')) {direction = 'R';}
+            if ((direction=='U')) {
+                direction = 'R';
+                return true;
+            }
         }
         //check if head touches bottom border
         if (y[0] > SCREEN_HEIGHT-(UNIT_SIZE*2)) {//working
-            if ((direction=='D')) {direction = 'L';}
+            if ((direction=='D')) {
+                direction = 'L';
+                return true;
+            }
         }
+        return false;
     }
 
     public void move() {
