@@ -12,7 +12,7 @@ public class GamePanel extends JPanel implements ActionListener {
     static final int SCREEN_HEIGHT = 600;
     static final int UNIT_SIZE = 25;
     static final int GAME_UNITS = (SCREEN_WIDTH*SCREEN_HEIGHT)/UNIT_SIZE;
-    static final int DELAY = 300;
+    static final int DELAY = 100;
     final int[] x = new int[(GAME_UNITS)];
     final int[] y = new int[(GAME_UNITS)];
     int bodyParts = 6;
@@ -144,17 +144,16 @@ public class GamePanel extends JPanel implements ActionListener {
 
     public void checkStep() {
         //check if head touches left border
-        if (x[0] < (UNIT_SIZE*2)) {
-            direction = 'D';
+        if (x[0] < (UNIT_SIZE)) {
+            if ((direction=='L')) {direction = 'U';}
         }
         //check if head touches right border
         if ((x[0] > SCREEN_WIDTH-(UNIT_SIZE*2))) { //working
             if ((direction=='R')) {direction = 'D';}
         }
         //check if head touches top border
-        if (y[0] < (UNIT_SIZE*2)) {
-            if ((y[0]==0)&&(x[0] > SCREEN_WIDTH-(UNIT_SIZE*2))) {direction = 'D';}
-            direction = 'R';
+        if (y[0] < (UNIT_SIZE)) {
+            if ((direction=='U')) {direction = 'R';}
         }
         //check if head touches bottom border
         if (y[0] > SCREEN_HEIGHT-(UNIT_SIZE*2)) {//working
