@@ -83,7 +83,7 @@ public class GamePanel extends JPanel implements ActionListener {
                     g.setColor(Color.green);
                     g.fillRect(x[i], y[i], UNIT_SIZE, UNIT_SIZE);
                 } else {
-                    g.setColor(Color.blue);
+                    g.setColor(Color.yellow);
                     g.fillRect(x[i], y[i], UNIT_SIZE, UNIT_SIZE);
                 }
 
@@ -169,7 +169,7 @@ public class GamePanel extends JPanel implements ActionListener {
         //touches body
 
             if ((direction=='L')) {
-                for (int i = bodyParts; i > 0; i--) {
+                for (int i = 0; i < bodyParts; i++) {
                     if ((x[0]-1 == x[i])) {
                         return true;
                     }
@@ -177,7 +177,7 @@ public class GamePanel extends JPanel implements ActionListener {
 
             }
             if ((direction=='R')) {
-                for (int i = bodyParts; i > 0; i--) {
+                for (int i = 0; i < bodyParts; i++) {
                     if ((x[0]+1 == x[i])) {
                         return true;
                     }
@@ -185,7 +185,7 @@ public class GamePanel extends JPanel implements ActionListener {
 
             }
             if ((direction=='U')) {
-                for (int i = bodyParts; i > 0; i--) {
+                for (int i = 0; i < bodyParts; i++) {
                     if ((y[0]-1 == y[i])) {
                         return true;
                     }
@@ -193,7 +193,7 @@ public class GamePanel extends JPanel implements ActionListener {
 
             }
             if ((direction=='D')) {
-                for (int i = bodyParts; i > 0; i--) {
+                for (int i = 0; i < bodyParts; i++) {
                     if ((y[0]+1 == y[i])) {
                         return true;
                     }
@@ -207,6 +207,7 @@ public class GamePanel extends JPanel implements ActionListener {
         //check if head touches left border
         if (x[0] < (UNIT_SIZE)) {
             if ((direction=='L')) {
+                //randomDirection();
                 direction = 'U';
                 return true;
             }
@@ -214,6 +215,7 @@ public class GamePanel extends JPanel implements ActionListener {
         //check if head touches right border
         if ((x[0] > SCREEN_WIDTH-(UNIT_SIZE*2))) { //working
             if ((direction=='R')) {
+                //randomDirection();
                 direction = 'D';
                 return true;
             }
@@ -221,6 +223,7 @@ public class GamePanel extends JPanel implements ActionListener {
         //check if head touches top border
         if (y[0] < (UNIT_SIZE)) {
             if ((direction=='U')) {
+                //randomDirection();
                 direction = 'R';
                 return true;
             }
@@ -228,6 +231,7 @@ public class GamePanel extends JPanel implements ActionListener {
         //check if head touches bottom border
         if (y[0] > SCREEN_HEIGHT-(UNIT_SIZE*2)) {//working
             if ((direction=='D')) {
+                //randomDirection();
                 direction = 'L';
                 return true;
             }
@@ -236,7 +240,6 @@ public class GamePanel extends JPanel implements ActionListener {
     }
 
     public void move() {
-        checkStep();
 
         for(int i=bodyParts;i>0;i--) {
             x[i] = x[i-1];
@@ -266,6 +269,7 @@ public class GamePanel extends JPanel implements ActionListener {
         g.drawString("Game Over", (SCREEN_WIDTH - metrics.stringWidth("Game Over"))/2, SCREEN_HEIGHT/2);
         g.setColor(Color.red);
 
+        //ending score
         //ending score
         g.setFont(new Font("Ink Free", Font.BOLD, 40));
         FontMetrics metrics2 = getFontMetrics(g.getFont());
