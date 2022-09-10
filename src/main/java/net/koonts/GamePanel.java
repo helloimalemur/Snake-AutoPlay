@@ -14,7 +14,7 @@ public class GamePanel extends JPanel implements ActionListener {
     static final int DELAY = 300;
     final int[] x = new int[(GAME_UNITS)];
     final int[] y = new int[(GAME_UNITS)];
-    int bodyParts = 6;
+    int bodyParts = 0;
     int applesEaten = 0;
     int appleX;
     int appleY;
@@ -58,7 +58,7 @@ public class GamePanel extends JPanel implements ActionListener {
 
     public void startGame() {
         applesEaten = 0;
-        bodyParts = 12;
+        bodyParts = 5;
         newApple();
         direction = 'R';
         running = true;
@@ -91,10 +91,10 @@ public class GamePanel extends JPanel implements ActionListener {
             }
         } else {
             //gameOver(g);
-            running = true;
-            x[0] = random.nextInt((int) (SCREEN_WIDTH/UNIT_SIZE))*UNIT_SIZE;
-            y[0] = random.nextInt((int) (SCREEN_HEIGHT/UNIT_SIZE))*UNIT_SIZE;
-            startGame();
+            //running = true;
+            //x[0] = random.nextInt((int) (SCREEN_WIDTH/UNIT_SIZE))*UNIT_SIZE;
+            //y[0] = random.nextInt((int) (SCREEN_HEIGHT/UNIT_SIZE))*UNIT_SIZE;
+            //startGame();
         }
 
         g.setColor(Color.red);
@@ -169,7 +169,7 @@ public class GamePanel extends JPanel implements ActionListener {
                     if ((direction == 'D' && intendedDirection != 'U')) {if (!checkStepDangerous(intendedDirection)) {direction = intendedDirection;}}
 
             } else {
-                if (!checkStepDangerous(intendedDirection)) {direction = intendedDirection;}
+                //if (!checkStepDangerous(intendedDirection)) {direction = intendedDirection;}
             }
         }
     }
