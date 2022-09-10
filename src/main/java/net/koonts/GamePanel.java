@@ -42,8 +42,9 @@ public class GamePanel extends JPanel implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if(running) {
             randomDirection();
-            System.out.println("Heading: " + direction);
-            if (!checkStepDangerous()) {move();}
+            if (!checkStepDangerous()) {
+                System.out.println("Heading: " + direction + " Intended: "+ intendedDirection);
+                move();}
             //move();
             checkApple();
             checkCollision();
@@ -57,7 +58,7 @@ public class GamePanel extends JPanel implements ActionListener {
 
     public void startGame() {
         applesEaten = 0;
-        bodyParts = 6;
+        bodyParts = 12;
         newApple();
         direction = 'R';
         running = true;
@@ -170,10 +171,6 @@ public class GamePanel extends JPanel implements ActionListener {
     }
 
     public boolean checkStepDangerous() {
-        if ((direction == 'U' && intendedDirection == 'D')) {return true;}
-        if ((direction == 'L' && intendedDirection == 'R')) {return true;}
-        if ((direction == 'R' && intendedDirection == 'L')) {return true;}
-        if ((direction == 'D' && intendedDirection == 'U')) {return true;}
 
         //checks if next step touches body
         if ((direction=='L')) {
@@ -232,7 +229,7 @@ public class GamePanel extends JPanel implements ActionListener {
                     }
                 }
             }
-            if (intendedDirection=='D') {
+            if (intendedDirection=='R') {
                 for (int i = 0; i < bodyParts; i++) {
                     if ((x[0]+1 == x[i])&&(y[0] == y[i])) {
                         return true;
@@ -254,7 +251,7 @@ public class GamePanel extends JPanel implements ActionListener {
                     }
                 }
             }
-            if (intendedDirection=='D') {
+            if (intendedDirection=='R') {
                 for (int i = 0; i < bodyParts; i++) {
                     if ((x[0]+1 == x[i])&&(y[0] == y[i])) {
                         return true;
@@ -262,7 +259,15 @@ public class GamePanel extends JPanel implements ActionListener {
                 }
             }
         }
+        ////////////////////
+        //
+        for (int i = bodyParts; i > 0; i--) {
+            if ((x[0] == x[i]) && (y[0] == y[i])) {
+                return true;
 
+            }
+        }
+        //
         //check if head touches left border
         if (x[0] < (UNIT_SIZE)) {
             if ((direction=='L')) {
@@ -295,6 +300,12 @@ public class GamePanel extends JPanel implements ActionListener {
                 return true;
             }
         }
+        // prevent turning back on self
+        if ((direction == 'U' && intendedDirection == 'D')) {return true;}
+        if ((direction == 'L' && intendedDirection == 'R')) {return true;}
+        if ((direction == 'R' && intendedDirection == 'L')) {return true;}
+        if ((direction == 'D' && intendedDirection == 'U')) {return true;}
+
         return false;
     }
 
