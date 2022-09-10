@@ -125,6 +125,8 @@ public class GamePanel extends JPanel implements ActionListener {
             if ((x[0] == x[i]) && (y[0] == y[i])) {
                 running = false;
                 System.out.println("!!!hit body part");
+                System.out.println("head: x="+x[0]+", y="+y[0]);
+                System.out.println("body part #"+i+": x="+x[i]+", y="+y[i]);
 
             }
         }
@@ -161,6 +163,8 @@ public class GamePanel extends JPanel implements ActionListener {
                     if ((direction == 'R' && intendedDirection != 'L')) {if (!checkStepDangerous()) {direction = intendedDirection;}}
                     if ((direction == 'D' && intendedDirection != 'U')) {if (!checkStepDangerous()) {direction = intendedDirection;}}
 
+            } else {
+                direction = intendedDirection;
             }
         }
     }
@@ -178,12 +182,39 @@ public class GamePanel extends JPanel implements ActionListener {
                     return true;
                 }
             }
-
+            if (intendedDirection=='U') {
+                for (int i = 0; i < bodyParts; i++) {
+                    if ((x[0] == x[i])&&(y[0]-1 == y[i])) {
+                        return true;
+                    }
+                }
+            }
+            if (intendedDirection=='D') {
+                for (int i = 0; i < bodyParts; i++) {
+                    if ((x[0] == x[i])&&(y[0]+1 == y[i])) {
+                        return true;
+                    }
+                }
+            }
         }
         if ((direction=='R')) {
             for (int i = 0; i < bodyParts; i++) {
                 if ((x[0]+1 == x[i])&&(y[0] == y[i])) {
                     return true;
+                }
+            }
+            if (intendedDirection=='U') {
+                for (int i = 0; i < bodyParts; i++) {
+                    if ((x[0] == x[i])&&(y[0]-1 == y[i])) {
+                        return true;
+                    }
+                }
+            }
+            if (intendedDirection=='D') {
+                for (int i = 0; i < bodyParts; i++) {
+                    if ((x[0] == x[i])&&(y[0]+1 == y[i])) {
+                        return true;
+                    }
                 }
             }
 
@@ -194,12 +225,40 @@ public class GamePanel extends JPanel implements ActionListener {
                     return true;
                 }
             }
+            if (intendedDirection=='L') {
+                for (int i = 0; i < bodyParts; i++) {
+                    if ((x[0]-1 == x[i])&&(y[0] == y[i])) {
+                        return true;
+                    }
+                }
+            }
+            if (intendedDirection=='D') {
+                for (int i = 0; i < bodyParts; i++) {
+                    if ((x[0]+1 == x[i])&&(y[0] == y[i])) {
+                        return true;
+                    }
+                }
+            }
 
         }
         if ((direction=='D')) {
             for (int i = 0; i < bodyParts; i++) {
                 if ((y[0]+1 == y[i])&&(x[0] == x[i])) {
                     return true;
+                }
+            }
+            if (intendedDirection=='L') {
+                for (int i = 0; i < bodyParts; i++) {
+                    if ((x[0]-1 == x[i])&&(y[0] == y[i])) {
+                        return true;
+                    }
+                }
+            }
+            if (intendedDirection=='D') {
+                for (int i = 0; i < bodyParts; i++) {
+                    if ((x[0]+1 == x[i])&&(y[0] == y[i])) {
+                        return true;
+                    }
                 }
             }
         }
