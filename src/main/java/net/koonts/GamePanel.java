@@ -11,7 +11,7 @@ public class GamePanel extends JPanel implements ActionListener {
     static final int SCREEN_HEIGHT = 600;
     static final int UNIT_SIZE = 25;
     static final int GAME_UNITS = (SCREEN_WIDTH*SCREEN_HEIGHT)/UNIT_SIZE;
-    static final int DELAY = 100;
+    static final int DELAY = 300;
     final int[] x = new int[(GAME_UNITS)];
     final int[] y = new int[(GAME_UNITS)];
     int bodyParts = 6;
@@ -91,6 +91,10 @@ public class GamePanel extends JPanel implements ActionListener {
             }
         } else {
             //gameOver(g);
+            running = true;
+            x[0] = random.nextInt((int) (SCREEN_WIDTH/UNIT_SIZE))*UNIT_SIZE;
+            y[0] = random.nextInt((int) (SCREEN_HEIGHT/UNIT_SIZE))*UNIT_SIZE;
+            startGame();
         }
 
         g.setColor(Color.red);
@@ -174,20 +178,20 @@ public class GamePanel extends JPanel implements ActionListener {
         boolean dangerous = false;
         //checks if next step touches body
         if ((direction=='L')) {
-            for (int i = 0; i < bodyParts; i++) {
+            for (int i = bodyParts; i > 0; i--) {
                 if ((x[0]-1 == x[i])) {
                     dangerous = true;
                 }
             }
             if (intendedDirection=='U') {
-                for (int i = 0; i < bodyParts; i++) {
+                for (int i = bodyParts; i > 0; i--) {
                     if ((x[0] == x[i])&&(y[0]-1 == y[i])) {
                         dangerous = true;
                     }
                 }
             }
             if (intendedDirection=='D') {
-                for (int i = 0; i < bodyParts; i++) {
+                for (int i = bodyParts; i > 0; i--) {
                     if ((x[0] == x[i])&&(y[0]+1 == y[i])) {
                         dangerous = true;
                     }
@@ -195,20 +199,20 @@ public class GamePanel extends JPanel implements ActionListener {
             }
         }
         if ((direction=='R')) {
-            for (int i = 0; i < bodyParts; i++) {
+            for (int i = bodyParts; i > 0; i--) {
                 if ((x[0]+1 == x[i])) {
                     dangerous = true;
                 }
             }
             if (intendedDirection=='U') {
-                for (int i = 0; i < bodyParts; i++) {
+                for (int i = bodyParts; i > 0; i--) {
                     if ((x[0] == x[i])&&(y[0]-1 == y[i])) {
                         dangerous = true;
                     }
                 }
             }
             if (intendedDirection=='D') {
-                for (int i = 0; i < bodyParts; i++) {
+                for (int i = bodyParts; i > 0; i--) {
                     if ((x[0] == x[i])&&(y[0]+1 == y[i])) {
                         dangerous = true;
                     }
@@ -217,20 +221,20 @@ public class GamePanel extends JPanel implements ActionListener {
 
         }
         if ((direction=='U')) {
-            for (int i = 0; i < bodyParts; i++) {
+            for (int i = bodyParts; i > 0; i--) {
                 if ((y[0]-1 == y[i])) {
                     dangerous = true;
                 }
             }
             if (intendedDirection=='L') {
-                for (int i = 0; i < bodyParts; i++) {
+                for (int i = bodyParts; i > 0; i--) {
                     if ((x[0]-1 == x[i])&&(y[0] == y[i])) {
                         dangerous = true;
                     }
                 }
             }
             if (intendedDirection=='R') {
-                for (int i = 0; i < bodyParts; i++) {
+                for (int i = bodyParts; i > 0; i--) {
                     if ((x[0]+1 == x[i])&&(y[0] == y[i])) {
                         dangerous = true;
                     }
@@ -239,20 +243,20 @@ public class GamePanel extends JPanel implements ActionListener {
 
         }
         if ((direction=='D')) {
-            for (int i = 0; i < bodyParts; i++) {
+            for (int i = bodyParts; i > 0; i--) {
                 if ((y[0]+1 == y[i])) {
                     dangerous = true;
                 }
             }
             if (intendedDirection=='L') {
-                for (int i = 0; i < bodyParts; i++) {
+                for (int i = bodyParts; i > 0; i--) {
                     if ((x[0]-1 == x[i])&&(y[0] == y[i])) {
                         dangerous = true;
                     }
                 }
             }
             if (intendedDirection=='R') {
-                for (int i = 0; i < bodyParts; i++) {
+                for (int i = bodyParts; i > 0; i--) {
                     if ((x[0]+1 == x[i])&&(y[0] == y[i])) {
                         dangerous = true;
                     }
