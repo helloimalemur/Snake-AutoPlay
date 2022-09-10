@@ -4,7 +4,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
-import java.util.Objects;
 import java.util.Random;
 
 public class GamePanel extends JPanel implements ActionListener {
@@ -20,6 +19,7 @@ public class GamePanel extends JPanel implements ActionListener {
     int appleX;
     int appleY;
     char direction;
+    char intendedDirection;
     ArrayList<Character> directions = new ArrayList<>();
     boolean running = false;
     Timer timer;
@@ -43,7 +43,7 @@ public class GamePanel extends JPanel implements ActionListener {
         if(running) {
             randomDirection();
             System.out.println("Heading: " + direction);
-            if (!checkStep()) {move();}
+            if (!checkStepDangerous()) {move();}
             //move();
             checkApple();
             checkCollision();
@@ -153,56 +153,57 @@ public class GamePanel extends JPanel implements ActionListener {
     public void randomDirection() {
         int ran = random.nextInt(100);
         if (ran%3==0) {
-            char td = directions.get(random.nextInt(directions.size()));
-            if (!(td == direction)) {
+            intendedDirection = directions.get(random.nextInt(directions.size()));
+            if (!(intendedDirection == direction)) {
 
-                    if ((direction == 'U' && td != 'D')) {if (!checkStep()) {direction = td;}}
-                    if ((direction == 'L' && td != 'R')) {if (!checkStep()) {direction = td;}}
-                    if ((direction == 'R' && td != 'L')) {if (!checkStep()) {direction = td;}}
-                    if ((direction == 'D' && td != 'U')) {if (!checkStep()) {direction = td;}}
+                    if ((direction == 'U' && intendedDirection != 'D')) {if (!checkStepDangerous()) {direction = intendedDirection;}}
+                    if ((direction == 'L' && intendedDirection != 'R')) {if (!checkStepDangerous()) {direction = intendedDirection;}}
+                    if ((direction == 'R' && intendedDirection != 'L')) {if (!checkStepDangerous()) {direction = intendedDirection;}}
+                    if ((direction == 'D' && intendedDirection != 'U')) {if (!checkStepDangerous()) {direction = intendedDirection;}}
 
             }
         }
     }
 
-    public boolean checkStep() {
-        //touches body
+    public boolean checkStepDangerous() {
+        if ((direction == 'U' && intendedDirection == 'D')) {return true;}
+        if ((direction == 'L' && intendedDirection == 'R')) {return true;}
+        if ((direction == 'R' && intendedDirection == 'L')) {return true;}
+        if ((direction == 'D' && intendedDirection == 'U')) {return true;}
 
-            if ((direction=='L')) {
-                for (int i = 0; i < bodyParts; i++) {
-                    if ((x[0]-1 == x[i])) {
-                        return true;
-                    }
-                }
-
-            }
-            if ((direction=='R')) {
-                for (int i = 0; i < bodyParts; i++) {
-                    if ((x[0]+1 == x[i])) {
-                        return true;
-                    }
-                }
-
-            }
-            if ((direction=='U')) {
-                for (int i = 0; i < bodyParts; i++) {
-                    if ((y[0]-1 == y[i])) {
-                        return true;
-                    }
-                }
-
-            }
-            if ((direction=='D')) {
-                for (int i = 0; i < bodyParts; i++) {
-                    if ((y[0]+1 == y[i])) {
-                        return true;
-                    }
+        //checks if next step touches body
+        if ((direction=='L')) {
+            for (int i = 0; i < bodyParts; i++) {
+                if ((x[0]-1 == x[i])) {
+                    return true;
                 }
             }
 
-            //if ((x[0] == x[i]) && (y[0] == y[i])) {
-            //    return true;
-            //}
+        }
+        if ((direction=='R')) {
+            for (int i = 0; i < bodyParts; i++) {
+                if ((x[0]+1 == x[i])) {
+                    return true;
+                }
+            }
+
+        }
+        if ((direction=='U')) {
+            for (int i = 0; i < bodyParts; i++) {
+                if ((y[0]-1 == y[i])) {
+                    return true;
+                }
+            }
+
+        }
+        if ((direction=='D')) {
+            for (int i = 0; i < bodyParts; i++) {
+                if ((y[0]+1 == y[i])) {
+                    return true;
+                }
+
+            }
+        }
 
         //check if head touches left border
         if (x[0] < (UNIT_SIZE)) {
