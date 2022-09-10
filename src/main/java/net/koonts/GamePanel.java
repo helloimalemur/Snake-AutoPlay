@@ -3,6 +3,7 @@ package net.koonts;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Random;
 
@@ -11,20 +12,25 @@ public class GamePanel extends JPanel implements ActionListener {
     static final int SCREEN_HEIGHT = 600;
     static final int UNIT_SIZE = 25;
     static final int GAME_UNITS = (SCREEN_WIDTH*SCREEN_HEIGHT)/UNIT_SIZE;
-    static final int DELAY = 100;
+    static final int DELAY = 300;
     final int[] x = new int[(GAME_UNITS)];
     final int[] y = new int[(GAME_UNITS)];
     int bodyParts = 6;
     int applesEaten = 0;
     int appleX;
     int appleY;
-    char direction = 'R';
+    char direction;
+    ArrayList<Character> directions = new ArrayList<>();
     boolean running = false;
     Timer timer;
     Random random;
 
     GamePanel() {
         random = new Random();
+        directions.add(0,'U');
+        directions.add(1,'D');
+        directions.add(2,'L');
+        directions.add(3,'R');
         this.setPreferredSize(new Dimension(600,600));
         this.setBackground(Color.black);
         this.setFocusable(true);
@@ -48,8 +54,9 @@ public class GamePanel extends JPanel implements ActionListener {
 
     public void startGame() {
         applesEaten = 0;
-        bodyParts = 6;
+        bodyParts = 1;
         newApple();
+        direction = 'R';
         running = true;
         timer = new Timer(DELAY, this);
         timer.start();
@@ -99,27 +106,6 @@ public class GamePanel extends JPanel implements ActionListener {
         System.out.println(appleX);
         System.out.println(appleY);
     }
-    public void move() {
-        for(int i=bodyParts;i>0;i--) {
-            x[i] = x[i-1];
-            y[i] = y[i-1];
-        }
-        switch (direction) {
-            case 'U':
-                y[0] = y[0] - UNIT_SIZE;
-                break;
-            case 'D':
-                y[0] = y[0] + UNIT_SIZE;
-                break;
-            case 'R':
-                x[0] = x[0] + UNIT_SIZE;
-                break;
-            case 'L':
-                x[0] = x[0] - UNIT_SIZE;
-                break;
-        }
-    }
-
     public void checkApple() {
         //check if head touches apple
         if (x[0] == appleX && y[0] == appleY) {
@@ -129,6 +115,7 @@ public class GamePanel extends JPanel implements ActionListener {
             bodyParts += 1;
         }
     }
+
     public void checkCollision() {
         //check if head collided with body
         for (int i = bodyParts; i > 0; i--) {
@@ -152,6 +139,49 @@ public class GamePanel extends JPanel implements ActionListener {
         //check if head touches bottom border
         if (y[0] > SCREEN_HEIGHT) {
             running = false;
+        }
+    }
+
+    public void checkStep() {
+        //check if head touches left border
+        if (x[0] < (UNIT_SIZE*2)) {
+            direction = 'D';
+        }
+        //check if head touches right border
+        if ((x[0] > SCREEN_WIDTH-(UNIT_SIZE*2))) { //working
+            if ((direction=='R')) {direction = 'D';}
+        }
+        //check if head touches top border
+        if (y[0] < (UNIT_SIZE*2)) {
+            if ((y[0]==0)&&(x[0] > SCREEN_WIDTH-(UNIT_SIZE*2))) {direction = 'D';}
+            direction = 'R';
+        }
+        //check if head touches bottom border
+        if (y[0] > SCREEN_HEIGHT-(UNIT_SIZE*2)) {//working
+            if ((direction=='D')) {direction = 'L';}
+        }
+    }
+
+    public void move() {
+        checkStep();
+
+        for(int i=bodyParts;i>0;i--) {
+            x[i] = x[i-1];
+            y[i] = y[i-1];
+        }
+        switch (direction) {
+            case 'U':
+                y[0] = y[0] - UNIT_SIZE;
+                break;
+            case 'D':
+                y[0] = y[0] + UNIT_SIZE;
+                break;
+            case 'R':
+                x[0] = x[0] + UNIT_SIZE;
+                break;
+            case 'L':
+                x[0] = x[0] - UNIT_SIZE;
+                break;
         }
     }
 
